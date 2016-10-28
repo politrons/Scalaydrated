@@ -28,6 +28,7 @@ dependencies {
     compile 'com.fasterxml.jackson.module:jackson-module-scala_2.10:2.8.3'
     compile 'com.couchbase.client:java-client:2.2.6'
     compile 'io.reactivex:rxscala_2.11:0.26.1'
+    compile 'junit:junit:4.11'
 }
 
 task wrapper(type: Wrapper) {
