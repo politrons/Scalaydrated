@@ -1,0 +1,38 @@
+ext {
+    resolveSystemOrEnvProperty = { String name, defaultValue = null ->
+        if (System.properties.containsKey(name)) return System.properties[name]
+        if (System.env.containsKey(name)) return System.env[name]
+        return defaultValue
+    }
+    majorMinorVersion = "4.0"
+    host = resolveSystemOrEnvProperty("HOST", "http://localhost:8080")
+}
+
+
+// Groovy must be first and the scala plugin does java/scala at the same time.
+apply plugin: 'scala'
+
+// Group and version artifact information
+// Placed here to avoid issues with the ordering of the included scripts.
+
+apply from: "gradle/library.gradle"
+
+
+repositories {
+    // Maven repo defines the artifactory url in AWS for our local caching of artifacts.
+    System.env.MAVEN_REPO ? maven { url System.env.MAVEN_REPO } : jcenter()
+    maven { url 'http://repo.jenkins-ci.org/releases/' }
+}
+
+dependencies {
+    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.10:2.8.3'
+    compile 'com.couchbase.client:java-client:2.2.6'
+    compile 'io.reactivex:rxscala_2.11:0.26.1'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}
+
+
+
