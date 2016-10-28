@@ -1,6 +1,6 @@
 package model
 
-import src.Model
+import main.Model
 
 
 case class User(var userName: String = "",

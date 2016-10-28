@@ -3,7 +3,7 @@ package persistance
 import com.couchbase.client.java.document.JsonDocument
 import com.couchbase.client.java.document.json.JsonObject
 import com.couchbase.client.java.{AsyncBucket, CouchbaseAsyncCluster}
-import src.PersistenceDAO
+import main.PersistenceDAO
 
 
 class CouchbaseDAO extends PersistenceDAO {

@@ -2,10 +2,11 @@ import java.util.UUID
 
 import _root_.model.User
 import events.UserCreated
+import main.Model
 import org.junit.Test
 import persistance.CouchbaseDAO
-import src.Model
-import src.PersistenceModel._
+
+import main.PersistenceModel._
 
 /**
   * Created by pabloperezgarcia on 28/10/2016.

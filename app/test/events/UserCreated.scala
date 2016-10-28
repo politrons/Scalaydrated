@@ -1,7 +1,7 @@
 package events
 
 import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
-import src.Event
+import main.Event
 
 
 class UserCreated @JsonCreator()(@JsonProperty("userName")var userName: String,

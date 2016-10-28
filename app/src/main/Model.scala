@@ -1,5 +1,4 @@
-package src
-
+package main
 
 trait Model {
 
