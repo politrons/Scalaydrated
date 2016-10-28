@@ -1,5 +1,5 @@
 Author  Pablo Perez Garcia 
 
-# Scaladration
+![My image](app/resources/img/Scalaydrated.png)
 
 Event sourcing project 
