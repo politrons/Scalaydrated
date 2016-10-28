@@ -1,4 +1,4 @@
-package scaladration
+package src
 
 /**
   * Created by pabloperezgarcia on 25/10/2016.

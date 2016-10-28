@@ -1,4 +1,4 @@
-package scaladration
+package src
 
 
 trait Model {
