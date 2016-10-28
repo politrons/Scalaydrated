@@ -8,6 +8,7 @@ ext {
     host = resolveSystemOrEnvProperty("HOST", "http://localhost:8080")
 }
 
+version = '1.0'
 
 // Groovy must be first and the scala plugin does java/scala at the same time.
 apply plugin: 'scala'
@@ -19,9 +20,7 @@ apply from: "gradle/library.gradle"
 
 
 repositories {
-    // Maven repo defines the artifactory url in AWS for our local caching of artifacts.
-    System.env.MAVEN_REPO ? maven { url System.env.MAVEN_REPO } : jcenter()
-    maven { url 'http://repo.jenkins-ci.org/releases/' }
+    mavenCentral()
 }
 
 dependencies {
@@ -30,6 +29,19 @@ dependencies {
     compile 'io.reactivex:rxscala_2.11:0.26.1'
     compile 'junit:junit:4.11'
 }
+
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'com.mkyong.DateUtils'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.14'

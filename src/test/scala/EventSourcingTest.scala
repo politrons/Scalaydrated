@@ -1,13 +1,7 @@
 import java.util.UUID
 
-import _root_.model.User
-import events.UserCreated
-import main.Model
+import PersistenceModel._
 import org.junit.Test
-import persistance.CouchbaseDAO
-
-import main.PersistenceModel._
-
 /**
   * Created by pabloperezgarcia on 28/10/2016.
   */

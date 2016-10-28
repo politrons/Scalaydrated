@@ -1,8 +1,3 @@
-package model
-
-import main.Model
-
-
 case class User(var userName: String = "",
                 var password: String = "") extends Model {
 

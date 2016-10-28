@@ -1,5 +1,3 @@
-package main
-
 import java.io.IOException
 
 import com.couchbase.client.java.document.json.JsonObject.{from, _}
