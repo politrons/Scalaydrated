@@ -40,13 +40,13 @@ class EventSourcingTest {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
     val documentId: String = user.createDocument(id)
-    val event = new ProductAdded("Beans","1.00")
+    val event = new ProductAdded("Beans", "1.00")
     //When
     user.appendEvent[ProductAdded, User](id, event, classOf[ProductAdded],
       (model, evt) => model.loadProduct(evt.productName, evt.productPrice))
     user.rehydrate(documentId)
     //Then
-    assert(user.products.size ==1)
+    assert(user.products.size == 1)
   }
 
   @Test
@@ -55,7 +55,7 @@ class EventSourcingTest {
     val (userName: String, password: String, id: String) = getCredentials
     val documentId: String = user.createDocument(id)
     val userCreatedEvent = new UserCreated(userName, password)
-    val productAddedEvent = new ProductAdded("Beans","1.00")
+    val productAddedEvent = new ProductAdded("Beans", "1.00")
     //When
     user.appendEvent[UserCreated, User](documentId, userCreatedEvent, classOf[UserCreated],
       (model, evt) => model.loadAccount(evt.userName, evt.password))
@@ -66,7 +66,9 @@ class EventSourcingTest {
     user.rehydrate(documentId)
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
-    assert(user.products.size ==1)
+    assert(user.products.size == 1)
+    assert(user.products.head.productName.equals("Beans") && user.products.head.productPrice.equals("1.00"))
+
   }
 
   def getCredentials: (String, String, String) = {
