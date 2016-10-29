@@ -15,6 +15,12 @@ object PersistenceModel {
   private val mapper: ObjectMapper = new ObjectMapper
   private val eventMapping = collection.mutable.Map[Class[_ <: Event], (Model, Event) => Unit]()
 
+  /**
+    * Ininitialize the persistence layer, create a new instance of the mode, and set the persistence layer in it
+    * @param persistenceDAO persistence layer to persist the document and events
+    * @tparam M Model type to be used to be instantiated and set the persistence layer in it.
+    * @return new instance of the model
+    */
   def initialize[M <: Model : ClassTag](persistenceDAO: PersistenceDAO): M = {
     val model = classTag[M].runtimeClass.newInstance.asInstanceOf[M]
     persistenceDAO.init()
@@ -42,7 +48,7 @@ object PersistenceModel {
       * @param action function to apply over the model during rehydrate
       * @tparam E
       */
-    def appendEvent[E <: Event](documentId: String, event: Event, clazz: Class[E], action: (Model, E) => Unit) {
+    def appendEvent[E <: Event, M <:Model](documentId: String, event: Event, clazz: Class[E], action: (M, E) => Unit) {
       val document = model.dao.getDocument(documentId)
       val jsonDocument = JsonObject.fromJson(document)
       jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
@@ -74,8 +80,7 @@ object PersistenceModel {
 
     private def deserialiseEvent(event: JsonObject): Event = {
       try {
-        mapper.readValue(event.toString, new TypeReference[Event]() {
-        })
+        mapper.readValue(event.toString, new TypeReference[Event]() {})
       }
       catch {
         case e: IOException =>
@@ -89,7 +94,7 @@ object PersistenceModel {
       * @param fn    function to be used in rehydrate
       * @tparam E      Event type to be used as generic
       */
-    private def setMapping[E <: Event](clazz: Class[E], fn: (Model, E) => Unit) {
+    private def setMapping[E <: Event, M<:Model](clazz: Class[E], fn: (M, E) => Unit) {
       eventMapping += clazz -> fn.asInstanceOf[(Model, Event) => Unit]
     }
 
