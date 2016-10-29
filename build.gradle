@@ -10,6 +10,10 @@ ext {
 
 version = '1.0'
 
+
+apply plugin: 'jvm-component'
+apply plugin: 'java-lang'
+
 // Groovy must be first and the scala plugin does java/scala at the same time.
 apply plugin: 'scala'
 
@@ -22,6 +26,7 @@ apply from: "gradle/library.gradle"
 repositories {
     mavenCentral()
 }
+
 
 dependencies {
     compile 'com.fasterxml.jackson.module:jackson-module-scala_2.10:2.8.3'
@@ -47,5 +52,15 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.14'
 }
 
+
+model {
+    components {
+        main(JvmLibrarySpec) {
+            api {
+                exports 'src.main.scala'
+            }
+        }
+    }
+}
 
 

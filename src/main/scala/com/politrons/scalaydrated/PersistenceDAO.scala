@@ -1,3 +1,5 @@
+package com.politrons.scalaydrated
+
 /**
   * Created by pabloperezgarcia on 25/10/2016.
   */

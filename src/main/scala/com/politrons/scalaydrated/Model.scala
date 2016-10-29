@@ -1,3 +1,5 @@
+package com.politrons.scalaydrated
+
 
 trait Model {
 
