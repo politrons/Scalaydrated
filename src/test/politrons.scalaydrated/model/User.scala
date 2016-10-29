@@ -3,18 +3,26 @@ package model
 import politrons.scalaydrated.Model
 
 case class User(var userName: String = "",
-                var password: String = "") extends Model {
+                var password: String = "",
+                var products: List[Product] = List()) extends Model {
 
   def this() {
     this("")
   }
 
   /**
-    * Rehydrate method for event sourcing
+    * Rehydrate user account method
     */
-  def loadUserName(username: String, password: String) {
+  def loadAccount(username: String, password: String) {
     this.userName = username
     this.password = password
+  }
+
+  /**
+    * Rehydrate shopping account method
+    */
+  def loadProduct(productName: String, productPrice: String) {
+    products = Product(productName, productPrice) +: products
   }
 
 }
