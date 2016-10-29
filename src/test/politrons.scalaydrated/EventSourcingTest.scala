@@ -28,12 +28,12 @@ class EventSourcingTest {
     val documentId: String = user.createDocument(id)
     val event = new UserCreated(userName, password)
     //When
-    user.appendEvent[UserCreated, User](documentId, event, classOf[UserCreated],
-      (model, evt) => model.loadAccount(evt.userName, evt.password))
+    addUserCreatedEvent(documentId, event)
     user.rehydrate(documentId)
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
   }
+
 
   @Test
   def shoppingTest() {
@@ -42,8 +42,7 @@ class EventSourcingTest {
     val documentId: String = user.createDocument(id)
     val event = new ProductAdded("Beans", "1.00")
     //When
-    user.appendEvent[ProductAdded, User](id, event, classOf[ProductAdded],
-      (model, evt) => model.loadProduct(evt.productName, evt.productPrice))
+    addProductEvent(id, event)
     user.rehydrate(documentId)
     //Then
     assert(user.products.size == 1)
@@ -57,18 +56,42 @@ class EventSourcingTest {
     val userCreatedEvent = new UserCreated(userName, password)
     val productAddedEvent = new ProductAdded("Beans", "1.00")
     //When
-    user.appendEvent[UserCreated, User](documentId, userCreatedEvent, classOf[UserCreated],
-      (model, evt) => model.loadAccount(evt.userName, evt.password))
-
-    user.appendEvent[ProductAdded, User](id, productAddedEvent, classOf[ProductAdded],
-      (model, evt) => model.loadProduct(evt.productName, evt.productPrice))
-
+    addUserCreatedEvent(documentId, userCreatedEvent)
+    addProductEvent(id, productAddedEvent)
     user.rehydrate(documentId)
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
     assert(user.products.size == 1)
     assert(user.products.head.productName.equals("Beans") && user.products.head.productPrice.equals("1.00"))
 
+  }
+
+  @Test
+  def threeBeansCan() {
+    //Given
+    val (userName: String, password: String, id: String) = getCredentials
+    val documentId: String = user.createDocument(id)
+    val userCreatedEvent = new UserCreated(userName, password)
+    val productAddedEvent = new ProductAdded("Beans", "1.00")
+    //When
+    addUserCreatedEvent(documentId, userCreatedEvent)
+    addProductEvent(id, productAddedEvent)
+    addProductEvent(id, productAddedEvent)
+    addProductEvent(id, productAddedEvent)
+    user.rehydrate(documentId)
+    //Then
+    assert(user.userName.equals(userName) && user.password.equals(password))
+    assert(user.products.size == 3)
+  }
+
+  def addUserCreatedEvent(documentId: String, event: UserCreated): Unit = {
+    user.appendEvent[UserCreated, User](documentId, event, classOf[UserCreated],
+      (model, evt) => model.loadAccount(evt.userName, evt.password))
+  }
+
+  def addProductEvent(id: String, event: ProductAdded): Unit = {
+    user.appendEvent[ProductAdded, User](id, event, classOf[ProductAdded],
+    (model, evt) => model.loadProduct(evt.productName, evt.productPrice))
   }
 
   def getCredentials: (String, String, String) = {
