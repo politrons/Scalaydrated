@@ -1,4 +1,4 @@
-package com.politrons.scalaydrated
+package politrons.scalaydrated
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.databind.ObjectMapper

@@ -1,11 +1,11 @@
 import java.util.UUID
 
-import com.politrons.scalaydrated.Model
 import event.UserCreated
 import model.User
-import com.politrons.scalaydrated.PersistenceModel._
+import politrons.scalaydrated.PersistenceModel._
 import org.junit.Test
 import persistence.CouchbaseDAO
+import politrons.scalaydrated.Model
 /**
   * Created by pabloperezgarcia on 28/10/2016.
   */

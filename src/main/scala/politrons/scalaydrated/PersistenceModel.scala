@@ -1,4 +1,4 @@
-package com.politrons.scalaydrated
+package politrons.scalaydrated
 
 import java.io.IOException
 

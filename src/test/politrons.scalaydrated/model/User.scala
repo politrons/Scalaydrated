@@ -1,6 +1,6 @@
 package model
 
-import com.politrons.scalaydrated.Model
+import politrons.scalaydrated.Model
 
 case class User(var userName: String = "",
                 var password: String = "") extends Model {
