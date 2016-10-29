@@ -8,8 +8,7 @@ import politrons.scalaydrated.PersistenceModel._
 
 /**
   * Created by pabloperezgarcia on 28/10/2016.
-  */
-/**
+  *
   * In those particular example we use the three unique methods of the API
   * 1º {createDocument} Create an empty document with an array of empty Events
   * 2º {appendEvent} Append an event into the document and pass the function to be applied in the rehydrate
