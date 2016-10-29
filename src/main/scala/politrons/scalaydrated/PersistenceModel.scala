@@ -28,7 +28,7 @@ object PersistenceModel {
     model
   }
 
-  implicit class model(model: Model) {
+  implicit class model(model: Model)  {
 
     /**
       * This method will create the document where all events for that documentId will be appended.
