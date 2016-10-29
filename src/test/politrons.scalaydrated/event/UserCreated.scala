@@ -1,17 +1,23 @@
 package event
 
 import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
+import event.UserCreated.{PASSWORD, USER_NAME}
 import politrons.scalaydrated.Event
 
-class UserCreated @JsonCreator()(@JsonProperty("userName")var userName: String,
-                                 @JsonProperty("password")var password: String) extends Event{
+object UserCreated {
+  final val USER_NAME = "userName"
+  final val PASSWORD = "password"
+}
+
+class UserCreated @JsonCreator()(@JsonProperty(USER_NAME) var userName: String,
+                                 @JsonProperty(PASSWORD) var password: String) extends Event {
 
 
-  @JsonProperty("userName") def getUserName: String = {
+  @JsonProperty(USER_NAME) def getUserName: String = {
     userName
   }
 
-  @JsonProperty("password") def getPassword: String = {
+  @JsonProperty(PASSWORD) def getPassword: String = {
     password
   }
 }
