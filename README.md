@@ -2,7 +2,7 @@ Author  Pablo Perez Garcia
 
 ![My image](src/main/resources/img/Scalaydrated.png)
 
-Event sourcing project                     Unit test [here] (src/test/politrons.scalaydrated/EventSourcingTest.scala)
+Event sourcing project__________________________Unit test [here] (src/test/politrons.scalaydrated/EventSourcingTest.scala)
 
  
  
