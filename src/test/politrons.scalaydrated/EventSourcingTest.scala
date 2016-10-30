@@ -127,18 +127,18 @@ class EventSourcingTest {
   }
 
   def addUserCreatedEvent(documentId: String, event: UserCreated): Unit = {
-    user.appendEvent[UserCreated, User](documentId, event, classOf[UserCreated],
+    user.appendEvent[UserCreated, User](documentId, event,
       (model, evt) => model.loadAccount(evt.userName, evt.password))
   }
 
   def addProductEvent(id: String, event: ProductAdded): Unit = {
-    user.appendEvent[ProductAdded, User](id, event, classOf[ProductAdded],
+    user.appendEvent[ProductAdded, User](id, event,
       (model, evt) => model.loadProduct(evt.productId, evt.productName, evt.productPrice))
   }
 
 
   def removeProductEvent(id: String, event: ProductRemoved): Unit = {
-    user.appendEvent[ProductRemoved, User](id, event, classOf[ProductRemoved],
+    user.appendEvent[ProductRemoved, User](id, event,
       (model, evt) => model.removeProduct(evt.productId))
   }
 
