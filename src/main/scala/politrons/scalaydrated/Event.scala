@@ -8,7 +8,7 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 @JsonTypeInfo(
   use = JsonTypeInfo.Id.CLASS,
   include = JsonTypeInfo.As.PROPERTY,
-  property = "type")
+  property = "event")
 trait Event {
 
   def encode: String = {

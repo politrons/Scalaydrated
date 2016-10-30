@@ -20,45 +20,45 @@ The document is formed with json structure, where contains timestamp of creation
 
 An example of a Document with several events imitating a basket: 
 ```   
-   {
-     "events": [
-       {
-         "type": "event.UserCreated",
-         "userName": "053f7b53-2963-406c-827b-4e15d98bad35",
-         "password": "password"
-       },
-       {
-         "productId": "f771def4-8e9c-4995-b810-d5e4d3749a99",
-         "type": "event.ProductAdded",
-         "productName": "Beans1",
-         "productPrice": "1.00"
-       },
-       {
-         "productId": "07111f90-8c20-425e-afd0-b106aa3a141a",
-         "type": "event.ProductAdded",
-         "productName": "Beans2",
-         "productPrice": "1.00"
-       },
-       {
-         "productId": "e7ae4694-8c77-4884-8d17-49d48ef3d7b2",
-         "type": "event.ProductAdded",
-         "productName": "Beans3",
-         "productPrice": "1.00"
-       },
-       {
-         "productId": "f771def4-8e9c-4995-b810-d5e4d3749a99",
-         "type": "event.ProductRemoved"
-       },
-       {
-         "productId": "7df83572-6298-4604-ac04-48e6874c6723",
-         "type": "event.ProductAdded",
-         "productName": "Beans4",
-         "productPrice": "1.00"
-       },
-       {
-         "productId": "e7ae4694-8c77-4884-8d17-49d48ef3d7b2",
-         "type": "event.ProductRemoved"
-       }
-     ]
-   }
+  {
+    "events": [
+      {
+        "event": "event.UserCreated",
+        "userName": "6baf181a-ee9b-4c7f-a341-f23d572914d3",
+        "password": "password"
+      },
+      {
+        "productId": "0c107db8-27ae-4054-a659-eca5bdc74834",
+        "event": "event.ProductAdded",
+        "productName": "Beans1",
+        "productPrice": "1.00"
+      },
+      {
+        "productId": "23c6731d-67c8-44b0-80c2-df014f5da48d",
+        "event": "event.ProductAdded",
+        "productName": "Beans2",
+        "productPrice": "1.00"
+      },
+      {
+        "productId": "c71678b1-db1d-4d08-a293-2db11e474087",
+        "event": "event.ProductAdded",
+        "productName": "Beans3",
+        "productPrice": "1.00"
+      },
+      {
+        "productId": "0c107db8-27ae-4054-a659-eca5bdc74834",
+        "event": "event.ProductRemoved"
+      },
+      {
+        "productId": "e57fda0e-fb09-4657-b2fb-f6ffbf1c25d3",
+        "event": "event.ProductAdded",
+        "productName": "Beans4",
+        "productPrice": "1.00"
+      },
+      {
+        "productId": "c71678b1-db1d-4d08-a293-2db11e474087",
+        "event": "event.ProductRemoved"
+      }
+    ]
+  }
 ```   
