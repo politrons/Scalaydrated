@@ -31,7 +31,7 @@ class EventSourcingTest {
 //    addUserCreatedEvent(documentId, event)
     user.appendEvent[UserCreated, User](event,
       (model, evt) => model.loadAccount(evt.userName, evt.password))
-    user.rehydrate
+    user.rehydrate(id)
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
   }
@@ -45,7 +45,7 @@ class EventSourcingTest {
     val event = new ProductAdded(generateId, "Beans", "1.00")
     //When
     addProductEvent(event)
-    user.rehydrate
+    user.rehydrate()
     //Then
     assert(user.products.size == 1)
   }
@@ -60,7 +60,7 @@ class EventSourcingTest {
     //When
     addUserCreatedEvent(userCreatedEvent)
     addProductEvent(productAddedEvent)
-    user.rehydrate
+    user.rehydrate()
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
     assert(user.products.size == 1)
@@ -80,7 +80,7 @@ class EventSourcingTest {
     addProductEvent(productAddedEvent)
     addProductEvent(productAddedEvent)
     addProductEvent(productAddedEvent)
-    user.rehydrate
+    user.rehydrate(id)
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
     assert(user.products.size == 3)
@@ -105,8 +105,8 @@ class EventSourcingTest {
     val productId4: String = generateId
     val productAddedEvent4 = new ProductAdded(productId4, "Playstation 4", "399.00")
     //Remove products events
-    val removeProcut1 = new ProductRemoved(productId1)
-    val removeProcut2 = new ProductRemoved(productId3)
+    val removeProduct1 = new ProductRemoved(productId1)
+    val removeProduct2 = new ProductRemoved(productId3)
 
 
     //When
@@ -114,10 +114,10 @@ class EventSourcingTest {
     addProductEvent(productAddedEvent1)
     addProductEvent(productAddedEvent2)
     addProductEvent(productAddedEvent3)
-    removeProductEvent(removeProcut1)
+    removeProductEvent(removeProduct1)
     addProductEvent(productAddedEvent4)
-    removeProductEvent(removeProcut2)
-    user.rehydrate
+    removeProductEvent(removeProduct2)
+    user.rehydrate()
 
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))

@@ -62,15 +62,19 @@ object PersistenceModel {
     }
 
     /**
-      * Get the document from persistence layer and rehydrate the Model from the events.
+      * Get the document from persistence layer and rehydrate the Model from the events using the id of the instance.
       **/
-    def rehydrate = {
+    def rehydrate() {
       val document = model.dao.getDocument(model.id)
       val jsonDocument = JsonObject.fromJson(document)
       deserialiseEvents(model, jsonDocument)
     }
 
-    def rehydrate(documentId:String) = {
+    /**
+      * Get the document from persistence layer and rehydrate the Model using the external id.
+      * @param documentId of the document
+      */
+    def rehydrate(documentId:String) {
       val document = model.dao.getDocument(documentId)
       val jsonDocument = JsonObject.fromJson(document)
       deserialiseEvents(model, jsonDocument)
@@ -79,13 +83,12 @@ object PersistenceModel {
 
     import scala.collection.JavaConversions._
 
-    private def deserialiseEvents(model: Model, document: JsonObject): model = {
+    private def deserialiseEvents(model: Model, document: JsonObject){
       val array: JsonArray = document.getArray(EVENTS)
       array.toList.toList.foreach { entry =>
         val json = from(entry.asInstanceOf[java.util.HashMap[String, JsonObject]])
         applyEvent(model, deserialiseEvent(json))
       }
-      model
     }
 
     private def deserialiseEvent(event: JsonObject): Event = {
@@ -112,10 +115,10 @@ object PersistenceModel {
       eventMapping(event.getClass).apply(model, event)
     }
 
-  }
+    private def getTime: String = {
+      Calendar.getInstance().getTime.toString
+    }
 
-  def getTime: String = {
-    Calendar.getInstance().getTime.toString
   }
 }
 
