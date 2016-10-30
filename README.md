@@ -8,10 +8,10 @@ Event sourcing project
 The use of this library is really simple, you just need to follow the next steps in order to start playing.
  * Create all events that you want to apply on your model extending Event library class.
  * Create a model(Akka actor), that extends Model library class.
- * once that you have that model you can made use the three unique methods of the API
-   * {createDocument} Create an empty document with an array of empty Events
-   * {appendEvent} Append an event into the document and pass the function to be applied in the rehydrate
-   * {rehydrate} Rehydrate the model with all events persisted
+ * Once that you have that model, this one contains the methods of the API 
+   * `createDocument` Create an empty document with an array of empty Events
+   * `appendEvent` Append an event into the document and pass the function to be applied in the rehydrate
+   * `rehydrate` Rehydrate the model with all events persisted
    
    
 In order to do not impose Json library to the developers, the encoded document is passed to the persistence layer in String format.
