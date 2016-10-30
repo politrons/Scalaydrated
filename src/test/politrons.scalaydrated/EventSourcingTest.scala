@@ -42,7 +42,7 @@ class EventSourcingTest {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
-    val event = new ProductAdded(UUID.randomUUID().toString, "Beans", "1.00")
+    val event = new ProductAdded(generateId, "Beans", "1.00")
     //When
     addProductEvent(event)
     user.rehydrate
@@ -56,7 +56,7 @@ class EventSourcingTest {
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val userCreatedEvent = new UserCreated(userName, password)
-    val productAddedEvent = new ProductAdded(UUID.randomUUID().toString, "Beans", "1.00")
+    val productAddedEvent = new ProductAdded(generateId, "Beans", "1.00")
     //When
     addUserCreatedEvent(userCreatedEvent)
     addProductEvent(productAddedEvent)
@@ -74,7 +74,7 @@ class EventSourcingTest {
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val userCreatedEvent = new UserCreated(userName, password)
-    val productAddedEvent = new ProductAdded(UUID.randomUUID().toString, "Beans", "1.00")
+    val productAddedEvent = new ProductAdded(generateId, "Beans", "1.00")
     //When
     addUserCreatedEvent(userCreatedEvent)
     addProductEvent(productAddedEvent)
@@ -93,16 +93,16 @@ class EventSourcingTest {
     user.createDocument(id)
     val userCreatedEvent = new UserCreated(userName, password)
     //Add products events
-    val productId1: String = UUID.randomUUID().toString
+    val productId1: String = generateId
     val productAddedEvent1 = new ProductAdded(productId1, "Beans", "1.00")
 
-    val productId2: String = UUID.randomUUID().toString
+    val productId2: String = generateId
     val productAddedEvent2 = new ProductAdded(productId2, "Coca-cola", "3.00")
 
-    val productId3: String = UUID.randomUUID().toString
+    val productId3: String = generateId
     val productAddedEvent3 = new ProductAdded(productId3, "Pizza", "6.00")
 
-    val productId4: String = UUID.randomUUID().toString
+    val productId4: String = generateId
     val productAddedEvent4 = new ProductAdded(productId4, "Playstation 4", "399.00")
     //Remove products events
     val removeProcut1 = new ProductRemoved(productId1)
@@ -128,27 +128,31 @@ class EventSourcingTest {
 
   }
 
-  def addUserCreatedEvent(event: UserCreated): Unit = {
+  private def addUserCreatedEvent(event: UserCreated): Unit = {
     user.appendEvent[UserCreated, User](event,
       (model, evt) => model.loadAccount(evt.userName, evt.password))
   }
 
-  def addProductEvent(event: ProductAdded): Unit = {
+  private def addProductEvent(event: ProductAdded): Unit = {
     user.appendEvent[ProductAdded, User](event,
       (model, evt) => model.loadProduct(evt.productId, evt.productName, evt.productPrice))
   }
 
 
-  def removeProductEvent(event: ProductRemoved): Unit = {
+  private def removeProductEvent(event: ProductRemoved): Unit = {
     user.appendEvent[ProductRemoved, User](event,
       (model, evt) => model.removeProduct(evt.productId))
   }
 
-  def getCredentials: (String, String, String) = {
-    val userName = UUID.randomUUID().toString
+  private def getCredentials: (String, String, String) = {
+    val userName = generateId
     val password = "password"
     val id = userName + password
     (userName, password, id)
+  }
+
+  private def generateId: String = {
+    UUID.randomUUID().toString
   }
 
 
