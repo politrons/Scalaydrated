@@ -39,36 +39,33 @@ object PersistenceModel {
       * @param documentId for the new document
       * @return
       */
-    def createDocument(documentId: String): String = {
+    def createDocument(documentId: String) {
       val userDocument: JsonObject = create.put(TIME, getTime)
       userDocument.put(EVENTS, JsonArray.create)
-      model.dao.insert(documentId, userDocument.toString)
+      val id = model.dao.insert(documentId, userDocument.toString)
+      model.setId(id)
     }
 
     /**
       * This method will append events in the document created.
       *
-      * @param documentId if of the document
       * @param event      instance for rehydrate of the model
       * @param action     function to apply over the model during rehydrate
       * @tparam E
       */
-    def appendEvent[E <: Event, M <: Model](documentId: String, event: E, action: (M, E) => Unit) {
-      val document = model.dao.getDocument(documentId)
+    def appendEvent[E <: Event, M <: Model](event: E, action: (M, E) => Unit) {
+      val document = model.dao.getDocument(model.id)
       val jsonDocument = JsonObject.fromJson(document)
       jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
-      model.dao.replace(documentId, jsonDocument.toString)
+      model.dao.replace(model.id, jsonDocument.toString)
       setMapping(event.getClass, action)
     }
 
     /**
       * Get the document from persistence layer and rehydrate the Model from the events.
-      *
-      * @param documentId to get the document for rehydrate the model
-      * @return
-      */
-    def rehydrate(documentId: String) = {
-      val document = model.dao.getDocument(documentId)
+      **/
+    def rehydrate = {
+      val document = model.dao.getDocument(model.id)
       val jsonDocument = JsonObject.fromJson(document)
       deserialiseEvents(model, jsonDocument)
     }

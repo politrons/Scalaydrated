@@ -25,11 +25,13 @@ class EventSourcingTest {
   def createAccountTest() {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
-    val documentId: String = user.createDocument(id)
+    user.createDocument(id)
     val event = new UserCreated(userName, password)
     //When
-    addUserCreatedEvent(documentId, event)
-    user.rehydrate(documentId)
+//    addUserCreatedEvent(documentId, event)
+    user.appendEvent[UserCreated, User](event,
+      (model, evt) => model.loadAccount(evt.userName, evt.password))
+    user.rehydrate
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
   }
@@ -39,11 +41,11 @@ class EventSourcingTest {
   def shoppingTest() {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
-    val documentId: String = user.createDocument(id)
+    user.createDocument(id)
     val event = new ProductAdded(UUID.randomUUID().toString, "Beans", "1.00")
     //When
-    addProductEvent(id, event)
-    user.rehydrate(documentId)
+    addProductEvent(event)
+    user.rehydrate
     //Then
     assert(user.products.size == 1)
   }
@@ -52,13 +54,13 @@ class EventSourcingTest {
   def completeRehydrateTest() {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
-    val documentId: String = user.createDocument(id)
+    user.createDocument(id)
     val userCreatedEvent = new UserCreated(userName, password)
     val productAddedEvent = new ProductAdded(UUID.randomUUID().toString, "Beans", "1.00")
     //When
-    addUserCreatedEvent(documentId, userCreatedEvent)
-    addProductEvent(id, productAddedEvent)
-    user.rehydrate(documentId)
+    addUserCreatedEvent(userCreatedEvent)
+    addProductEvent(productAddedEvent)
+    user.rehydrate
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
     assert(user.products.size == 1)
@@ -70,15 +72,15 @@ class EventSourcingTest {
   def addThreeProducts() {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
-    val documentId: String = user.createDocument(id)
+    user.createDocument(id)
     val userCreatedEvent = new UserCreated(userName, password)
     val productAddedEvent = new ProductAdded(UUID.randomUUID().toString, "Beans", "1.00")
     //When
-    addUserCreatedEvent(documentId, userCreatedEvent)
-    addProductEvent(id, productAddedEvent)
-    addProductEvent(id, productAddedEvent)
-    addProductEvent(id, productAddedEvent)
-    user.rehydrate(documentId)
+    addUserCreatedEvent(userCreatedEvent)
+    addProductEvent(productAddedEvent)
+    addProductEvent(productAddedEvent)
+    addProductEvent(productAddedEvent)
+    user.rehydrate
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
     assert(user.products.size == 3)
@@ -88,7 +90,7 @@ class EventSourcingTest {
   def addRemoveProducts() {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
-    val documentId: String = user.createDocument(id)
+    user.createDocument(id)
     val userCreatedEvent = new UserCreated(userName, password)
     //Add products events
     val productId1: String = UUID.randomUUID().toString
@@ -108,14 +110,14 @@ class EventSourcingTest {
 
 
     //When
-    addUserCreatedEvent(documentId, userCreatedEvent)
-    addProductEvent(id, productAddedEvent1)
-    addProductEvent(id, productAddedEvent2)
-    addProductEvent(id, productAddedEvent3)
-    removeProductEvent(id, removeProcut1)
-    addProductEvent(id, productAddedEvent4)
-    removeProductEvent(id, removeProcut2)
-    user.rehydrate(documentId)
+    addUserCreatedEvent(userCreatedEvent)
+    addProductEvent(productAddedEvent1)
+    addProductEvent(productAddedEvent2)
+    addProductEvent(productAddedEvent3)
+    removeProductEvent(removeProcut1)
+    addProductEvent(productAddedEvent4)
+    removeProductEvent(removeProcut2)
+    user.rehydrate
 
     //Then
     assert(user.userName.equals(userName) && user.password.equals(password))
@@ -126,19 +128,19 @@ class EventSourcingTest {
 
   }
 
-  def addUserCreatedEvent(documentId: String, event: UserCreated): Unit = {
-    user.appendEvent[UserCreated, User](documentId, event,
+  def addUserCreatedEvent(event: UserCreated): Unit = {
+    user.appendEvent[UserCreated, User](event,
       (model, evt) => model.loadAccount(evt.userName, evt.password))
   }
 
-  def addProductEvent(id: String, event: ProductAdded): Unit = {
-    user.appendEvent[ProductAdded, User](id, event,
+  def addProductEvent(event: ProductAdded): Unit = {
+    user.appendEvent[ProductAdded, User](event,
       (model, evt) => model.loadProduct(evt.productId, evt.productName, evt.productPrice))
   }
 
 
-  def removeProductEvent(id: String, event: ProductRemoved): Unit = {
-    user.appendEvent[ProductRemoved, User](id, event,
+  def removeProductEvent(event: ProductRemoved): Unit = {
+    user.appendEvent[ProductRemoved, User](event,
       (model, evt) => model.removeProduct(evt.productId))
   }
 
