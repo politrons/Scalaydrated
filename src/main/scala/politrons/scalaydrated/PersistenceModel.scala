@@ -1,6 +1,7 @@
 package politrons.scalaydrated
 
 import java.io.IOException
+import java.util.Calendar
 
 import com.couchbase.client.java.document.json.JsonObject.{from, _}
 import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
@@ -11,12 +12,14 @@ import scala.reflect._
 
 object PersistenceModel {
 
+  private val TIME: String = "time"
   private val EVENTS: String = "events"
   private val mapper: ObjectMapper = new ObjectMapper
   private val eventMapping = collection.mutable.Map[Class[_ <: Event], (Model, Event) => Unit]()
 
   /**
     * Ininitialize the persistence layer, create a new instance of the mode, and set the persistence layer in it
+    *
     * @param persistenceDAO persistence layer to persist the document and events
     * @tparam M Model type to be used to be instantiated and set the persistence layer in it.
     * @return new instance of the model
@@ -28,27 +31,30 @@ object PersistenceModel {
     model
   }
 
-  implicit class model(model: Model)  {
+  implicit class model(model: Model) {
 
     /**
       * This method will create the document where all events for that documentId will be appended.
+      *
       * @param documentId for the new document
       * @return
       */
     def createDocument(documentId: String): String = {
-      val userDocument: JsonObject = create.put(EVENTS, JsonArray.create)
+      val userDocument: JsonObject = create.put(TIME, getTime)
+      userDocument.put(EVENTS, JsonArray.create)
       model.dao.insert(documentId, userDocument.toString)
     }
 
     /**
-      *  This method will append events in the document created.
+      * This method will append events in the document created.
+      *
       * @param documentId if of the document
-      * @param event instance for rehydrate of the model
-      * @param clazz event for key of the function mapping
-      * @param action function to apply over the model during rehydrate
+      * @param event      instance for rehydrate of the model
+      * @param clazz      event for key of the function mapping
+      * @param action     function to apply over the model during rehydrate
       * @tparam E
       */
-    def appendEvent[E <: Event, M <:Model](documentId: String, event: Event, clazz: Class[E], action: (M, E) => Unit) {
+    def appendEvent[E <: Event, M <: Model](documentId: String, event: Event, clazz: Class[E], action: (M, E) => Unit) {
       val document = model.dao.getDocument(documentId)
       val jsonDocument = JsonObject.fromJson(document)
       jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
@@ -58,6 +64,7 @@ object PersistenceModel {
 
     /**
       * Get the document from persistence layer and rehydrate the Model from the events.
+      *
       * @param documentId to get the document for rehydrate the model
       * @return
       */
@@ -92,9 +99,9 @@ object PersistenceModel {
       *
       * @param clazz className to be used as key
       * @param fn    function to be used in rehydrate
-      * @tparam E      Event type to be used as generic
+      * @tparam E Event type to be used as generic
       */
-    private def setMapping[E <: Event, M<:Model](clazz: Class[E], fn: (M, E) => Unit) {
+    private def setMapping[E <: Event, M <: Model](clazz: Class[E], fn: (M, E) => Unit) {
       eventMapping += clazz -> fn.asInstanceOf[(Model, Event) => Unit]
     }
 
@@ -104,5 +111,8 @@ object PersistenceModel {
 
   }
 
+  def getTime: String = {
+    Calendar.getInstance().getTime.toString
+  }
 }
 

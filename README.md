@@ -14,51 +14,52 @@ The use of this library is really simple, you just need to follow the next steps
    * {rehydrate} Rehydrate the model with all events persisted
    
    
-In order to do not impose Json library to the developer, the encode document passed to the persistence layer is in String format.
+In order to do not impose Json library to the developers, the encoded document is passed to the persistence layer in String format.
 
-The document is formed with json structure, where contains timestamp of creation of the document and array of events to be used for the rehydrate of the model.  
+The document is formed as json structure, where contains time of creation of the document and array of events to be used for the rehydration of the model.  
 
 An example of a Document with several events imitating a basket: 
 ```   
- {
-   "events": [
-     {
-       "event": "event.UserCreated",
-       "userName": "cad522d4-f773-49b7-b3b5-e59d273b6f37",
-       "password": "password"
-     },
-     {
-       "productId": "9b03f020-ffd5-4128-88c7-f9ffef3d9d6f",
-       "event": "event.ProductAdded",
-       "productName": "Beans",
-       "productPrice": "1.00"
-     },
-     {
-       "productId": "e4567899-a411-47f6-a7e1-bba255130157",
-       "event": "event.ProductAdded",
-       "productName": "Coca-cola",
-       "productPrice": "3.00"
-     },
-     {
-       "productId": "e8aad91f-5916-4a40-8b2b-f9a3015eb064",
-       "event": "event.ProductAdded",
-       "productName": "Pizza",
-       "productPrice": "6.00"
-     },
-     {
-       "productId": "9b03f020-ffd5-4128-88c7-f9ffef3d9d6f",
-       "event": "event.ProductRemoved"
-     },
-     {
-       "productId": "05db01c2-a1d4-42d4-8068-4f37f085487c",
-       "event": "event.ProductAdded",
-       "productName": "Playstation 4",
-       "productPrice": "399.00"
-     },
-     {
-       "productId": "e8aad91f-5916-4a40-8b2b-f9a3015eb064",
-       "event": "event.ProductRemoved"
-     }
-   ]
- }
+{
+  "events": [
+    {
+      "event": "event.UserCreated",
+      "userName": "72c92626-aac3-4e06-8d00-37bf874bc6ec",
+      "password": "password"
+    },
+    {
+      "productId": "494e9d04-dd2d-40f6-ba03-55e57a44bc2f",
+      "event": "event.ProductAdded",
+      "productName": "Beans",
+      "productPrice": "1.00"
+    },
+    {
+      "productId": "f3b27f69-a75c-4791-b198-cc9b6a0dbeff",
+      "event": "event.ProductAdded",
+      "productName": "Coca-cola",
+      "productPrice": "3.00"
+    },
+    {
+      "productId": "fb9b6975-403a-4698-b308-746bbcacb279",
+      "event": "event.ProductAdded",
+      "productName": "Pizza",
+      "productPrice": "6.00"
+    },
+    {
+      "productId": "494e9d04-dd2d-40f6-ba03-55e57a44bc2f",
+      "event": "event.ProductRemoved"
+    },
+    {
+      "productId": "e898a333-42e1-419f-a7b4-e2012caabdd4",
+      "event": "event.ProductAdded",
+      "productName": "Playstation 4",
+      "productPrice": "399.00"
+    },
+    {
+      "productId": "fb9b6975-403a-4698-b308-746bbcacb279",
+      "event": "event.ProductRemoved"
+    }
+  ],
+  "time": "Sun Oct 30 10:00:27 GMT 2016"
+}
 ```   
