@@ -19,10 +19,17 @@ case class User(var userName: String = "",
   }
 
   /**
-    * Rehydrate shopping account method
+    * Rehydrate product to be added in user model
     */
-  def loadProduct(productName: String, productPrice: String) {
-    products = Product(productName, productPrice) +: products
+  def loadProduct(productId: String, productName: String, productPrice: String) {
+    products = Product(productId, productName, productPrice) +: products
+  }
+
+  /**
+    * Rehydrate productId to be deleted in user model
+    */
+  def removeProduct(productId: String): Unit = {
+    products = products.filter(product => !product.productId.equals(productId))
   }
 
 }
