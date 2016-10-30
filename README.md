@@ -20,45 +20,45 @@ The document is formed with json structure, where contains timestamp of creation
 
 An example of a Document with several events imitating a basket: 
 ```   
-  {
-    "events": [
-      {
-        "event": "event.UserCreated",
-        "userName": "6baf181a-ee9b-4c7f-a341-f23d572914d3",
-        "password": "password"
-      },
-      {
-        "productId": "0c107db8-27ae-4054-a659-eca5bdc74834",
-        "event": "event.ProductAdded",
-        "productName": "Beans1",
-        "productPrice": "1.00"
-      },
-      {
-        "productId": "23c6731d-67c8-44b0-80c2-df014f5da48d",
-        "event": "event.ProductAdded",
-        "productName": "Beans2",
-        "productPrice": "1.00"
-      },
-      {
-        "productId": "c71678b1-db1d-4d08-a293-2db11e474087",
-        "event": "event.ProductAdded",
-        "productName": "Beans3",
-        "productPrice": "1.00"
-      },
-      {
-        "productId": "0c107db8-27ae-4054-a659-eca5bdc74834",
-        "event": "event.ProductRemoved"
-      },
-      {
-        "productId": "e57fda0e-fb09-4657-b2fb-f6ffbf1c25d3",
-        "event": "event.ProductAdded",
-        "productName": "Beans4",
-        "productPrice": "1.00"
-      },
-      {
-        "productId": "c71678b1-db1d-4d08-a293-2db11e474087",
-        "event": "event.ProductRemoved"
-      }
-    ]
-  }
+ {
+   "events": [
+     {
+       "event": "event.UserCreated",
+       "userName": "cad522d4-f773-49b7-b3b5-e59d273b6f37",
+       "password": "password"
+     },
+     {
+       "productId": "9b03f020-ffd5-4128-88c7-f9ffef3d9d6f",
+       "event": "event.ProductAdded",
+       "productName": "Beans",
+       "productPrice": "1.00"
+     },
+     {
+       "productId": "e4567899-a411-47f6-a7e1-bba255130157",
+       "event": "event.ProductAdded",
+       "productName": "Coca-cola",
+       "productPrice": "3.00"
+     },
+     {
+       "productId": "e8aad91f-5916-4a40-8b2b-f9a3015eb064",
+       "event": "event.ProductAdded",
+       "productName": "Pizza",
+       "productPrice": "6.00"
+     },
+     {
+       "productId": "9b03f020-ffd5-4128-88c7-f9ffef3d9d6f",
+       "event": "event.ProductRemoved"
+     },
+     {
+       "productId": "05db01c2-a1d4-42d4-8068-4f37f085487c",
+       "event": "event.ProductAdded",
+       "productName": "Playstation 4",
+       "productPrice": "399.00"
+     },
+     {
+       "productId": "e8aad91f-5916-4a40-8b2b-f9a3015eb064",
+       "event": "event.ProductRemoved"
+     }
+   ]
+ }
 ```   

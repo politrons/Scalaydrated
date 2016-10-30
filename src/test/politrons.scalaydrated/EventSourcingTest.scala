@@ -67,7 +67,7 @@ class EventSourcingTest {
   }
 
   @Test
-  def threeBeansCan() {
+  def addThreeProducts() {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
     val documentId: String = user.createDocument(id)
@@ -92,16 +92,16 @@ class EventSourcingTest {
     val userCreatedEvent = new UserCreated(userName, password)
     //Add products events
     val productId1: String = UUID.randomUUID().toString
-    val productAddedEvent1 = new ProductAdded(productId1, "Beans1", "1.00")
+    val productAddedEvent1 = new ProductAdded(productId1, "Beans", "1.00")
 
     val productId2: String = UUID.randomUUID().toString
-    val productAddedEvent2 = new ProductAdded(productId2, "Beans2", "1.00")
+    val productAddedEvent2 = new ProductAdded(productId2, "Coca-cola", "3.00")
 
     val productId3: String = UUID.randomUUID().toString
-    val productAddedEvent3 = new ProductAdded(productId3, "Beans3", "1.00")
+    val productAddedEvent3 = new ProductAdded(productId3, "Pizza", "6.00")
 
     val productId4: String = UUID.randomUUID().toString
-    val productAddedEvent4 = new ProductAdded(productId4, "Beans4", "1.00")
+    val productAddedEvent4 = new ProductAdded(productId4, "Playstation 4", "399.00")
     //Remove products events
     val removeProcut1 = new ProductRemoved(productId1)
     val removeProcut2 = new ProductRemoved(productId3)
@@ -121,8 +121,8 @@ class EventSourcingTest {
     assert(user.userName.equals(userName) && user.password.equals(password))
     assert(user.products.size == 2)
 
-//    val totalMoney = user.products.map(product => BigDecimal.apply(product.productPrice)).sum
-//    assert(totalMoney == 2)
+    val totalMoney = user.products.map(product => BigDecimal.apply(product.productPrice)).sum
+    assert(totalMoney == 402.00)
 
   }
 
