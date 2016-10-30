@@ -70,6 +70,13 @@ object PersistenceModel {
       deserialiseEvents(model, jsonDocument)
     }
 
+    def rehydrate(documentId:String) = {
+      val document = model.dao.getDocument(documentId)
+      val jsonDocument = JsonObject.fromJson(document)
+      deserialiseEvents(model, jsonDocument)
+    }
+
+
     import scala.collection.JavaConversions._
 
     private def deserialiseEvents(model: Model, document: JsonObject): model = {
