@@ -18,7 +18,7 @@ object PersistenceModel {
   private val eventMapping = collection.mutable.Map[Class[_ <: Event], (Model, Event) => Unit]()
 
   /**
-    * Ininitialize the persistence layer, create a new instance of the mode, and set the persistence layer in it
+    * Initialize the persistence layer, create a new instance of the mode, and set the persistence layer in it
     *
     * @param persistenceDAO persistence layer to persist the document and events
     * @tparam M Model type to be used to be instantiated and set the persistence layer in it.
@@ -78,6 +78,7 @@ object PersistenceModel {
       val document = model.dao.getDocument(documentId)
       val jsonDocument = JsonObject.fromJson(document)
       deserialiseEvents(model, jsonDocument)
+      model.setId(documentId)
     }
 
 

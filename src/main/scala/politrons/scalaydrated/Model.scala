@@ -2,7 +2,6 @@ package politrons.scalaydrated
 
 trait Model {
 
-
   var dao: PersistenceDAO = _
 
   var id: String = _

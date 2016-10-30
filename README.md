@@ -18,7 +18,7 @@ In order to do not impose Json library to the developers, the encoded document i
 
 The document is formed as json structure, where contains time of creation of the document and array of events to be used for the rehydration of the model.  
 
-An example of a Document with several events imitating a basket: 
+An example of a Document with several events imitating an online shopping: 
 ```   
 {
   "events": [
