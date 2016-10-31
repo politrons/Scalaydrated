@@ -58,7 +58,7 @@ object PersistenceModel {
       val jsonDocument = JsonObject.fromJson(document)
       jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
       model.dao.replace(model.id, jsonDocument.toString)
-      setMapping(event.getClass, action)
+      setMapping(event.getClass,action)
     }
 
     /**

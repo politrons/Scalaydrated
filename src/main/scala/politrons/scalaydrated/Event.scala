@@ -16,4 +16,5 @@ trait Event {
     objectMapper.registerModule(DefaultScalaModule)
     objectMapper.writeValueAsString(this)
   }
+
 }
