@@ -54,16 +54,16 @@ object PersistenceModel {
     /**
       * This method will append events in the document created.
       *
-      * @param event  instance for rehydrate of the model
-      * @param action function to apply over the model during rehydrate
-      * @tparam E Event type to be used in the function
+      * @param command
+      * @tparam C
       */
-    def appendEvent[E <: Event, M <: Model](event: E, action: (M, E) => Unit) {
+    def appendEvent[C <: Command[M, E], M <: Model, E<:Event](command: C) {
       val document = dao.getDocument(model.id)
       val jsonDocument = fromJson(document)
+      val event = command.event
       jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
       dao.replace(model.id, jsonDocument.toString)
-      setMapping(event.getClass, action)
+      setMapping(event, command)
     }
 
     /**
@@ -104,12 +104,11 @@ object PersistenceModel {
     }
 
     /**
-      * @param clazz className to be used as key
-      * @param fn    function to be used in rehydrate
+//      * @param clazz className to be used as key
       * @tparam E Event type to be used as generic
       */
-    private def setMapping[E <: Event, M <: Model](clazz: Class[E], fn: (M, E) => Unit) {
-      eventMapping += clazz -> fn.asInstanceOf[(Model, Event) => Unit]
+    private def setMapping[E <: Event, M <: Model](event: E,command:Command[M,E]) {
+      eventMapping += event.getClass -> command.action.asInstanceOf[(Model, Event) => Unit]
     }
 
     private def applyEvent(model: Model, event: Event) {
