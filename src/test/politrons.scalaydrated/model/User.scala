@@ -3,7 +3,7 @@ package model
 import event.{ProductAdded, ProductRemoved, UserCreated}
 import politrons.scalaydrated.Model
 
-case class User(var userName: String = "",
+class User(var userName: String = "",
                 var password: String = "",
                 var products: List[Product] = List()) extends Model {
 

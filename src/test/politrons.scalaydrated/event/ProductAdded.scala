@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
 import event.Product.{PRODUCT_ID, PRODUCT_NAME, PRODUCT_PRICE}
 import politrons.scalaydrated.Event
 
-class ProductAdded @JsonCreator()(@JsonProperty(PRODUCT_ID) var productId: String,
+case class ProductAdded @JsonCreator()(@JsonProperty(PRODUCT_ID) var productId: String,
                                   @JsonProperty(PRODUCT_NAME) var productName: String,
                                   @JsonProperty(PRODUCT_PRICE) var productPrice: String) extends Event {
 

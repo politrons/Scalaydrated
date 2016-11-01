@@ -3,7 +3,7 @@ package politrons.scalaydrated
 import java.io.IOException
 import java.util.Calendar
 
-import com.couchbase.client.java.document.json.JsonObject.{from, _}
+import com.couchbase.client.java.document.json.JsonObject._
 import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
 import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -33,61 +33,62 @@ object PersistenceModel {
 
   implicit class model(model: Model) {
 
+    import Utils.anyUtils
+
+    import scala.collection.JavaConversions._
+
+    def dao: PersistenceDAO = model.dao
+
     /**
       * This method will create the document where all events for that documentId will be appended.
       *
       * @param documentId for the new document
-      * @return
       */
     def createDocument(documentId: String) {
       val userDocument: JsonObject = create.put(TIME, getTime)
       userDocument.put(EVENTS, JsonArray.create)
-      val id = model.dao.insert(documentId, userDocument.toString)
+      val id = dao.insert(documentId, userDocument.toString)
       model.setId(id)
     }
 
     /**
       * This method will append events in the document created.
       *
-      * @param event      instance for rehydrate of the model
-      * @param action     function to apply over the model during rehydrate
-      * @tparam E
+      * @param event  instance for rehydrate of the model
+      * @param action function to apply over the model during rehydrate
+      * @tparam E Event type to be used in the function
       */
     def appendEvent[E <: Event, M <: Model](event: E, action: (M, E) => Unit) {
-      val document = model.dao.getDocument(model.id)
-      val jsonDocument = JsonObject.fromJson(document)
+      val document = dao.getDocument(model.id)
+      val jsonDocument = fromJson(document)
       jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
-      model.dao.replace(model.id, jsonDocument.toString)
-      setMapping(event.getClass,action)
+      dao.replace(model.id, jsonDocument.toString)
+      setMapping(event.getClass, action)
     }
 
     /**
       * Get the document from persistence layer and rehydrate the Model from the events using the id of the instance.
       **/
     def rehydrate() {
-      val document = model.dao.getDocument(model.id)
-      val jsonDocument = JsonObject.fromJson(document)
-      deserialiseEvents(model, jsonDocument)
+      val document = dao.getDocument(model.id)
+      deserialiseEvents(fromJson(document))
     }
 
     /**
       * Get the document from persistence layer and rehydrate the Model using the external id.
+      *
       * @param documentId of the document
       */
-    def rehydrate(documentId:String) {
-      val document = model.dao.getDocument(documentId)
-      val jsonDocument = JsonObject.fromJson(document)
-      deserialiseEvents(model, jsonDocument)
+    def rehydrate(documentId: String) {
+      val document = dao.getDocument(documentId)
+      deserialiseEvents( fromJson(document))
       model.setId(documentId)
     }
 
-
-    import scala.collection.JavaConversions._
-
-    private def deserialiseEvents(model: Model, document: JsonObject){
-      val array: JsonArray = document.getArray(EVENTS)
-      array.toList.toList.foreach { entry =>
-        val json = from(entry.asInstanceOf[java.util.HashMap[String, JsonObject]])
+    private def deserialiseEvents(jsonDocument: JsonObject) {
+      val array: JsonArray = jsonDocument.getArray(EVENTS)
+      array.toList.foreach { entry =>
+        val json = entry.toJsonObject
         applyEvent(model, deserialiseEvent(json))
       }
     }
@@ -103,7 +104,6 @@ object PersistenceModel {
     }
 
     /**
-      *
       * @param clazz className to be used as key
       * @param fn    function to be used in rehydrate
       * @tparam E Event type to be used as generic
@@ -121,5 +121,6 @@ object PersistenceModel {
     }
 
   }
+
 }
 

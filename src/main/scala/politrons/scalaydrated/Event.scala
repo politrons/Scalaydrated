@@ -1,6 +1,8 @@
 package politrons.scalaydrated
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo
+import java.util.Calendar
+
+import com.fasterxml.jackson.annotation.{JsonProperty, JsonTypeInfo}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
@@ -10,6 +12,9 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
   include = JsonTypeInfo.As.PROPERTY,
   property = "event")
 trait Event {
+
+  @JsonProperty("time")
+  val time: String = Calendar.getInstance().getTime.toString
 
   def encode: String = {
     val objectMapper = new ObjectMapper with ScalaObjectMapper
