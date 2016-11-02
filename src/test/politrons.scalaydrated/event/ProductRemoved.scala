@@ -6,7 +6,7 @@ import politrons.scalaydrated.Event
 
 case class ProductRemoved @JsonCreator()(@JsonProperty(PRODUCT_ID) var productId: String) extends Event {
 
-  @JsonProperty("productId") def getProductId: String = {
+  @JsonProperty(PRODUCT_ID) def getProductId: String = {
     productId
   }
 

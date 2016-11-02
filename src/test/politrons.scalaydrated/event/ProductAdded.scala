@@ -9,15 +9,15 @@ case class ProductAdded @JsonCreator()(@JsonProperty(PRODUCT_ID) var productId: 
                                   @JsonProperty(PRODUCT_PRICE) var productPrice: String) extends Event {
 
 
-  @JsonProperty("productId") def getProductId: String = {
+  @JsonProperty(PRODUCT_ID) def getProductId: String = {
     productId
   }
 
-  @JsonProperty("productName") def getProductName: String = {
+  @JsonProperty(PRODUCT_NAME) def getProductName: String = {
     productName
   }
 
-  @JsonProperty("productPrice") def getProductPrice: String = {
+  @JsonProperty(PRODUCT_PRICE) def getProductPrice: String = {
     productPrice
   }
 }

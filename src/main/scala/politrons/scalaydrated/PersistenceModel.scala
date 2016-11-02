@@ -10,6 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 import scala.reflect._
 
+/**
+  * Created by pabloperezgarcia on 25/10/2016.
+  */
 object PersistenceModel {
 
   private val TIME: String = "time"
@@ -31,7 +34,7 @@ object PersistenceModel {
     model
   }
 
-  implicit class model(model: Model) {
+  implicit class model[M<:Model](model: M) {
 
     import Utils.anyUtils
 
@@ -55,9 +58,8 @@ object PersistenceModel {
       * This method will append events in the document created.
       *
       * @param command
-      * @tparam C
       */
-    def appendEvent[C <: Command[M, E], M <: Model, E<:Event](command: C) {
+    def appendEvent[E<:Event](command: Command[M,E]) {
       val document = dao.getDocument(model.id)
       val jsonDocument = fromJson(document)
       val event = command.event
@@ -107,7 +109,7 @@ object PersistenceModel {
 //      * @param clazz className to be used as key
       * @tparam E Event type to be used as generic
       */
-    private def setMapping[E <: Event, M <: Model](event: E,command:Command[M,E]) {
+    private def setMapping[E <: Event](event: E,command:Command[M,E]) {
       eventMapping += event.getClass -> command.action.asInstanceOf[(Model, Event) => Unit]
     }
 

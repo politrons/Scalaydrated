@@ -1,5 +1,8 @@
 package politrons.scalaydrated
 
+/**
+  * Created by pabloperezgarcia on 25/10/2016.
+  */
 trait Model {
 
   var dao: PersistenceDAO = _
