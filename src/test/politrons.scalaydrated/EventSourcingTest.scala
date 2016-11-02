@@ -27,9 +27,8 @@ class EventSourcingTest {
     //Given
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
-    val event = new UserCreated(userName, password)
-    //When
     val createUserCommand = new CreateUserCommand(userName, password)
+    //When
     user.appendEvent[UserCreated](createUserCommand)
     user.rehydrate(id)
     //Then

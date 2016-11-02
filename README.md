@@ -24,44 +24,51 @@ An example of a Document with several events imitating an online shopping:
 {
   "events": [
     {
+      "password": "password",
+      "time": "Wed Nov 02 18:58:02 GMT 2016",
       "event": "event.UserCreated",
-      "userName": "72c92626-aac3-4e06-8d00-37bf874bc6ec",
-      "password": "password"
+      "userName": "9d57f821-61b8-455c-9cf0-2868b1dc2023"
     },
     {
-      "productId": "494e9d04-dd2d-40f6-ba03-55e57a44bc2f",
+      "time": "Wed Nov 02 18:58:04 GMT 2016",
+      "productId": "0d1c0bb1-a5f8-454b-b9b8-b12f7a87022b",
       "event": "event.ProductAdded",
       "productName": "Beans",
       "productPrice": "1.00"
     },
     {
-      "productId": "f3b27f69-a75c-4791-b198-cc9b6a0dbeff",
+      "time": "Wed Nov 02 18:58:04 GMT 2016",
+      "productId": "dbb3f27c-dfc9-4d72-a2ed-f02bb2ec3238",
       "event": "event.ProductAdded",
       "productName": "Coca-cola",
       "productPrice": "3.00"
     },
     {
-      "productId": "fb9b6975-403a-4698-b308-746bbcacb279",
+      "time": "Wed Nov 02 18:58:04 GMT 2016",
+      "productId": "a40340f4-1b38-4251-bc1f-293d72d56448",
       "event": "event.ProductAdded",
       "productName": "Pizza",
       "productPrice": "6.00"
     },
     {
-      "productId": "494e9d04-dd2d-40f6-ba03-55e57a44bc2f",
-      "event": "event.ProductRemoved"
+      "productId": "0d1c0bb1-a5f8-454b-b9b8-b12f7a87022b",
+      "event": "event.ProductRemoved",
+      "time": "Wed Nov 02 18:58:04 GMT 2016"
     },
     {
-      "productId": "e898a333-42e1-419f-a7b4-e2012caabdd4",
+      "time": "Wed Nov 02 18:58:04 GMT 2016",
+      "productId": "56d71d56-0f69-42ad-9a1a-2e89e78a86cb",
       "event": "event.ProductAdded",
       "productName": "Playstation 4",
       "productPrice": "399.00"
     },
     {
-      "productId": "fb9b6975-403a-4698-b308-746bbcacb279",
-      "event": "event.ProductRemoved"
+      "productId": "a40340f4-1b38-4251-bc1f-293d72d56448",
+      "event": "event.ProductRemoved",
+      "time": "Wed Nov 02 18:58:04 GMT 2016"
     }
   ],
-  "time": "Sun Oct 30 10:00:27 GMT 2016"
+  "time": "Wed Nov 02 18:58:02 GMT 2016"
 }
 ```   
 
