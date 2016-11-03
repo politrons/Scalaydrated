@@ -11,7 +11,7 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
   use = JsonTypeInfo.Id.CLASS,
   include = JsonTypeInfo.As.PROPERTY,
   property = "event")
-trait Event {
+trait Event[M<:Model] {
 
   @JsonProperty("time")
   val time: String = Calendar.getInstance().getTime.toString
@@ -21,5 +21,7 @@ trait Event {
     objectMapper.registerModule(DefaultScalaModule)
     objectMapper.writeValueAsString(this)
   }
+
+  def action(model:M): Unit
 
 }

@@ -18,7 +18,6 @@ object PersistenceModel {
   private val TIME: String = "time"
   private val EVENTS: String = "events"
   private val mapper: ObjectMapper = new ObjectMapper
-  private val eventMapping = collection.mutable.Map[Class[_ <: Event], (Model, Event) => Unit]()
 
   /**
     * Initialize the persistence layer, create a new instance of the mode, and set the persistence layer in it
@@ -34,7 +33,7 @@ object PersistenceModel {
     model
   }
 
-  implicit class model[M<:Model](model: M) {
+  implicit class model[M <: Model](model: M) {
 
     import Utils.anyUtils
 
@@ -59,13 +58,12 @@ object PersistenceModel {
       *
       * @param command
       */
-    def appendEvent[E<:Event](command: Command[M,E]) {
+    def appendEvent[E <: Event[M]](command: Command[E]) {
       val document = dao.getDocument(model.id)
       val jsonDocument = fromJson(document)
       val event = command.event
       jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
       dao.replace(model.id, jsonDocument.toString)
-      setMapping(event, command)
     }
 
     /**
@@ -83,7 +81,7 @@ object PersistenceModel {
       */
     def rehydrate(documentId: String) {
       val document = dao.getDocument(documentId)
-      deserialiseEvents( fromJson(document))
+      deserialiseEvents(fromJson(document))
       model.setId(documentId)
     }
 
@@ -95,9 +93,9 @@ object PersistenceModel {
       }
     }
 
-    private def deserialiseEvent(event: JsonObject): Event = {
+    private def deserialiseEvent(event: JsonObject): Event[M] = {
       try {
-        mapper.readValue(event.toString, new TypeReference[Event]() {})
+        mapper.readValue(event.toString, new TypeReference[Event[M]]() {})
       }
       catch {
         case e: IOException =>
@@ -105,16 +103,8 @@ object PersistenceModel {
       }
     }
 
-    /**
-//      * @param clazz className to be used as key
-      * @tparam E Event type to be used as generic
-      */
-    private def setMapping[E <: Event](event: E,command:Command[M,E]) {
-      eventMapping += event.getClass -> command.action.asInstanceOf[(Model, Event) => Unit]
-    }
-
-    private def applyEvent(model: Model, event: Event) {
-      eventMapping(event.getClass).apply(model, event)
+    private def applyEvent(model: M, event: Event[M]) {
+      event.action(model)
     }
 
     private def getTime: String = {
