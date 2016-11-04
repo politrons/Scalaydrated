@@ -17,14 +17,12 @@ import politrons.scalaydrated.PersistenceModel._
   */
 class EventSourcingTest {
 
-  /**
-    * Return the actor model to be rehydrate
-    */
-  val user = initialize[User](new CouchbaseDAO())
+  val couchbase= new CouchbaseDAO()
 
   @Test
   def createAccountTest() {
     //Given
+    val user = initialize[User](couchbase)
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -39,8 +37,8 @@ class EventSourcingTest {
   @Test
   def shoppingTest() {
     //Given
-    val (userName: String, password: String, id: String) = getCredentials
-    user.createDocument(id)
+    val user = initialize[User](couchbase)
+    user.createDocument(generateId)
     val createProductCmd = new AddProductCommand(generateId, "Beans", "1.00")
     //When
     user.appendEvent[ProductAdded](createProductCmd)
@@ -52,6 +50,7 @@ class EventSourcingTest {
   @Test
   def completeRehydrateTest() {
     //Given
+    val user = initialize[User](couchbase)
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -70,6 +69,7 @@ class EventSourcingTest {
   @Test
   def addThreeProducts() {
     //Given
+    val user = initialize[User](couchbase)
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -88,6 +88,7 @@ class EventSourcingTest {
   @Test
   def addRemoveProducts() {
     //Given
+    val user = initialize[User](couchbase)
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -114,12 +115,14 @@ class EventSourcingTest {
     user.appendEvent[ProductRemoved](productRemovedCmd1)
     user.appendEvent[ProductAdded](createProductCmd4)
     user.appendEvent[ProductRemoved](productRemovedCmd2)
-    user.rehydrate()
-    //Then
-    assert(user.userName.equals(userName) && user.password.equals(password))
-    assert(user.products.size == 2)
 
-    val totalMoney = user.products.map(product => BigDecimal.apply(product.productPrice)).sum
+    val newUser = initialize[User](couchbase)
+    newUser.rehydrate(id)
+    //Then
+    assert(newUser.userName.equals(userName) && newUser.password.equals(password))
+    assert(newUser.products.size == 2)
+
+    val totalMoney = newUser.products.map(product => BigDecimal.apply(product.productPrice)).sum
     assert(totalMoney == 402.00)
 
   }

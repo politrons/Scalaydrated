@@ -5,6 +5,7 @@ package politrons.scalaydrated
   */
 object Constants {
 
+  final val TIME = "time"
   final val EVENTS = "events"
 
 }

@@ -7,7 +7,7 @@ import com.couchbase.client.java.document.json.JsonObject._
 import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
 import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
-import politrons.scalaydrated.Constants.EVENTS
+import politrons.scalaydrated.Constants.{EVENTS, TIME}
 
 import scala.reflect._
 
@@ -15,9 +15,6 @@ import scala.reflect._
   * Created by pabloperezgarcia on 25/10/2016.
   */
 object PersistenceModel {
-
-  private val TIME: String = "time"
-  private val mapper: ObjectMapper = new ObjectMapper
 
   /**
     * Initialize the persistence layer, create a new instance of the mode, and set the persistence layer in it
@@ -36,8 +33,9 @@ object PersistenceModel {
   implicit class model[M <: Model](model: M) {
 
     import Utils.{anyUtils, jsonObjectUtils}
-
     import scala.collection.JavaConversions._
+
+    private val mapper = new ObjectMapper
 
     def dao: PersistenceDAO = model.dao
 
@@ -59,8 +57,7 @@ object PersistenceModel {
       * @param command which will create an event
       */
     def appendEvent[E <: Event[M]](command: Command[E]) {
-      val document = dao.getDocument(model.id)
-      val jsonDocument = fromJson(document)
+      val jsonDocument = fromJson(getDocument)
       jsonDocument.events.add(fromJson(command.event.encode))
       dao.replace(model.id, jsonDocument.toString)
     }
@@ -69,7 +66,7 @@ object PersistenceModel {
       * Get the document from persistence layer and rehydrate the Model from the events using the id of the instance.
       **/
     def rehydrate() {
-      val document = dao.getDocument(model.id)
+      val document = getDocument
       deserialiseEvents(fromJson(document))
     }
 
@@ -93,8 +90,7 @@ object PersistenceModel {
     private def deserialiseEvent(event: JsonObject): Event[M] = {
       try {
         mapper.readValue(event.toString, new TypeReference[Event[M]]() {})
-      }
-      catch {
+      } catch {
         case e: IOException =>
           throw new IllegalArgumentException("Exception parsing JSON: " + event, e)
       }
@@ -106,6 +102,10 @@ object PersistenceModel {
 
     private def getTime: String = {
       Calendar.getInstance().getTime.toString
+    }
+
+    private def getDocument[E <: Event[M]]: String = {
+      dao.getDocument(model.id)
     }
 
   }

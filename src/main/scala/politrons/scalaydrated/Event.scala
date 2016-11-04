@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.{JsonProperty, JsonTypeInfo}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
+import politrons.scalaydrated.Constants.TIME
 
 @JsonTypeInfo(
   use = JsonTypeInfo.Id.CLASS,
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
   property = "event")
 trait Event[M<:Model] {
 
-  @JsonProperty("time")
+  @JsonProperty(TIME)
   val time: String = Calendar.getInstance().getTime.toString
 
   def encode: String = {
