@@ -1,6 +1,7 @@
 package politrons.scalaydrated
 
-import com.couchbase.client.java.document.json.JsonObject
+import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
+import politrons.scalaydrated.Constants.EVENTS
 
 /**
   * Created by pabloperezgarcia on 01/11/2016.
@@ -13,8 +14,11 @@ object Utils {
 
   }
 
-//  implicit class jsonOject(jsonObject:JsonObject){
-//    def toList[T]():List[T]
-//  }
+  implicit class jsonObjectUtils (jsonObject:JsonObject){
+
+    def events: JsonArray=jsonObject.getArray(EVENTS)
+
+  }
+
 
 }

@@ -22,6 +22,10 @@ trait Event[M<:Model] {
     objectMapper.writeValueAsString(this)
   }
 
+  /**
+    * Method that execute an action over the model to give it the state that contains for that event.
+    * @param model which we will give state
+    */
   def action(model:M): Unit
 
 }

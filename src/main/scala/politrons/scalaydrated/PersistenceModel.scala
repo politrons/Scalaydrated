@@ -7,6 +7,7 @@ import com.couchbase.client.java.document.json.JsonObject._
 import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
 import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import politrons.scalaydrated.Constants.EVENTS
 
 import scala.reflect._
 
@@ -16,7 +17,6 @@ import scala.reflect._
 object PersistenceModel {
 
   private val TIME: String = "time"
-  private val EVENTS: String = "events"
   private val mapper: ObjectMapper = new ObjectMapper
 
   /**
@@ -35,7 +35,7 @@ object PersistenceModel {
 
   implicit class model[M <: Model](model: M) {
 
-    import Utils.anyUtils
+    import Utils.{anyUtils, jsonObjectUtils}
 
     import scala.collection.JavaConversions._
 
@@ -47,22 +47,21 @@ object PersistenceModel {
       * @param documentId for the new document
       */
     def createDocument(documentId: String) {
-      val userDocument: JsonObject = create.put(TIME, getTime)
-      userDocument.put(EVENTS, JsonArray.create)
-      val id = dao.insert(documentId, userDocument.toString)
+      val jsonDocument = create.put(TIME, getTime)
+      jsonDocument.put(EVENTS, JsonArray.create)
+      val id = dao.insert(documentId, jsonDocument.toString)
       model.setId(id)
     }
 
     /**
-      * This method will append events in the document created.
+      * This method will append events throw a command in the document created.
       *
-      * @param command
+      * @param command which will create an event
       */
     def appendEvent[E <: Event[M]](command: Command[E]) {
       val document = dao.getDocument(model.id)
       val jsonDocument = fromJson(document)
-      val event = command.event
-      jsonDocument.getArray(EVENTS).add(fromJson(event.encode))
+      jsonDocument.events.add(fromJson(command.event.encode))
       dao.replace(model.id, jsonDocument.toString)
     }
 
@@ -86,10 +85,8 @@ object PersistenceModel {
     }
 
     private def deserialiseEvents(jsonDocument: JsonObject) {
-      val array: JsonArray = jsonDocument.getArray(EVENTS)
-      array.toList.foreach { entry =>
-        val json = entry.toJsonObject
-        applyEvent(model, deserialiseEvent(json))
+      jsonDocument.events.toList.foreach { event =>
+        applyEvent(model, deserialiseEvent(event.toJsonObject))
       }
     }
 
