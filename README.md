@@ -2,18 +2,19 @@ Author  Pablo Perez Garcia
 
 ![My image](src/main/resources/img/Scalaydrated.png)
 
-Event sourcing project
- 
+CQRS + Event sourcing project
  
 The use of this library is really simple, you just need to follow the next steps in order to start playing.
- * Create a model class(Akka actor). Must extends Model library class.
- * Create all events class that you want to apply on your model. Must extend Event library class.
+ * Classes to implement in order to use this library:
+    * Create a model class(Akka actor). Must extends Model library class.
+    * Create all events class that you want to apply on your model with the actions that you want to apply over it. Must extend Event library class.
+    * Create all commands to orchestrate the creation of the event to be used for the rehydration of the model. Must extend Command library class.
+ * Once that you have all your classes implemented is time to start playing.
    * `initialize` passing the type of the model and an instance of the persistence layer, we create a new model instance we invoke the init of the persistence layer, and we add the persistence layer into the model.
  * Once that you have that model, this one contains the methods of the API 
    * `createDocument` Create an empty document with an array of empty Events
    * `appendEvent` Append an event into the document and passed though a command to be applied in the rehydrate
    * `rehydrate` Rehydrate the model with all events persisted
-   
    
 In order to do not impose Json library to the developers, the encoded document is passed to the persistence layer in String format.
 
