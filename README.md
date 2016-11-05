@@ -13,7 +13,7 @@ The use of this library is really simple, you just need to follow the next steps
    * `initialize` passing the type of the model and an instance of the persistence layer, we create a new model instance we invoke the init of the persistence layer, and we add the persistence layer into the model.
  * Once that you have that model, this one contains the methods of the API 
    * `createDocument` Create an empty document with an array of empty Events
-   * `appendEvent` Append an event into the document and passed though a command to be applied in the rehydrate
+   * `appendEvent` Append an event into the document and passed through a command to be applied in the rehydrate
    * `rehydrate` Rehydrate the model with all events persisted
    
 In order to do not impose Json library to the developers, the encoded document is passed to the persistence layer in String format.
