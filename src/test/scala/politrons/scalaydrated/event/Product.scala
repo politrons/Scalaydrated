@@ -1,4 +1,4 @@
-package event
+package politrons.scalaydrated.event
 
 /**
   * Created by pabloperezgarcia on 30/10/2016.

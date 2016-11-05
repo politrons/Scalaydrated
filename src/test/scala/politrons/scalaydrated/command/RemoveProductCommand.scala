@@ -1,6 +1,6 @@
-package command
+package politrons.scalaydrated.command
 
-import event.ProductRemoved
+import politrons.scalaydrated.event.ProductRemoved
 import politrons.scalaydrated.Command
 
 class RemoveProductCommand(productId: String) extends Command[ProductRemoved] {

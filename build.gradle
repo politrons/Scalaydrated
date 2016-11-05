@@ -33,6 +33,7 @@ dependencies {
     compile 'com.couchbase.client:java-client:2.2.6'
     compile 'io.reactivex:rxscala_2.11:0.26.1'
     compile 'junit:junit:4.11'
+    compile 'org.clapper:classutil_2.11:1.0.13'
 }
 
 //create a single Jar with all dependencies

@@ -1,4 +1,4 @@
-package persistence
+package politrons.scalaydrated.persistence
 
 import com.couchbase.client.java.document.JsonDocument
 import com.couchbase.client.java.document.json.JsonObject

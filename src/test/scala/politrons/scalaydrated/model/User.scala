@@ -1,6 +1,5 @@
-package model
+package politrons.scalaydrated.model
 
-import event.{ProductAdded, ProductRemoved, UserCreated}
 import politrons.scalaydrated.Model
 
 class User(var userName: String = "",
@@ -14,23 +13,23 @@ class User(var userName: String = "",
   /**
     * Rehydrate user account method
     */
-  def load(evt:UserCreated) {
-    this.userName = evt.userName
-    this.password = evt.password
+  def load(username:String, password:String) {
+    this.userName = username
+    this.password = password
   }
 
   /**
     * Rehydrate product to be added in user model
     */
-  def load(evt:ProductAdded) {
-    products = Product(evt.productId, evt.productName, evt.productPrice) +: products
+  def load(productId:String, productName:String,productPrice:String ) {
+    products = Product(productId, productName,productPrice) +: products
   }
 
   /**
     * Rehydrate productId to be deleted in user model
     */
-  def load(evt: ProductRemoved): Unit = {
-    products = products.filter(product => !product.productId.equals(evt.productId))
+  def load(productId: String): Unit = {
+    products = products.filter(product => !product.productId.equals(productId))
   }
 
 }

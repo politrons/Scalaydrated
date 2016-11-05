@@ -1,6 +1,6 @@
-package command
+package politrons.scalaydrated.command
 
-import event.ProductAdded
+import politrons.scalaydrated.event.ProductAdded
 import politrons.scalaydrated.Command
 
 class AddProductCommand(productId: String, productName: String,

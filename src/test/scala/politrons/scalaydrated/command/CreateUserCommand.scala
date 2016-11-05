@@ -1,6 +1,6 @@
-package command
+package politrons.scalaydrated.command
 
-import event.UserCreated
+import politrons.scalaydrated.event.UserCreated
 import politrons.scalaydrated.Command
 
 class CreateUserCommand(userName: String, password: String) extends Command[UserCreated] {

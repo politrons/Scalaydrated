@@ -1,11 +1,11 @@
 import java.util.UUID
 
-import command.{AddProductCommand, CreateUserCommand, RemoveProductCommand}
-import event.{ProductAdded, ProductRemoved, UserCreated}
-import model.User
 import org.junit.Test
-import persistence.CouchbaseDAO
 import politrons.scalaydrated.PersistenceModel._
+import politrons.scalaydrated.command.{AddProductCommand, CreateUserCommand, RemoveProductCommand}
+import politrons.scalaydrated.event.{ProductAdded, ProductRemoved, UserCreated}
+import politrons.scalaydrated.model.User
+import politrons.scalaydrated.persistence.CouchbaseDAO
 
 /**
   * Created by pabloperezgarcia on 28/10/2016.

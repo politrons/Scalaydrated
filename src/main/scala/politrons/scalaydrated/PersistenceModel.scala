@@ -24,6 +24,7 @@ object PersistenceModel {
     * @return new instance of the model
     */
   def initialize[M <: Model : ClassTag](persistenceDAO: PersistenceDAO): M = {
+    ModelInspector.checkModelConstructor()
     val model = classTag[M].runtimeClass.newInstance.asInstanceOf[M]
     persistenceDAO.init()
     model.setPersistence(persistenceDAO)

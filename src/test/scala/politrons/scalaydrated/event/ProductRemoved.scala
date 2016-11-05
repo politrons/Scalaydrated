@@ -1,8 +1,8 @@
-package event
+package politrons.scalaydrated.event
 
 import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
-import event.Product.PRODUCT_ID
-import model.User
+import politrons.scalaydrated.event.Product.PRODUCT_ID
+import politrons.scalaydrated.model.User
 import politrons.scalaydrated.Event
 
 case class ProductRemoved @JsonCreator()(@JsonProperty(PRODUCT_ID) var productId: String) extends Event[User] {
@@ -12,7 +12,7 @@ case class ProductRemoved @JsonCreator()(@JsonProperty(PRODUCT_ID) var productId
   }
 
   override def action(user:User){
-    user.load(this)
+    user.load(productId)
   }
 
 }
