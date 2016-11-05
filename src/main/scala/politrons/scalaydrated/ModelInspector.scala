@@ -32,7 +32,7 @@ object ModelInspector {
       }
     }
     if (!zeroParams) {
-      throw new RuntimeException(String.format("Error on class definition %s " +
+      throw new UnsupportedClassVersionError(String.format("Error on class definition %s " +
         "your model need to implement zero params constructor", clazz.getName))
     }
   }

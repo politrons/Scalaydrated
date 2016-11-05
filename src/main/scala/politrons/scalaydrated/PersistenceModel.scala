@@ -8,6 +8,7 @@ import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
 import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import politrons.scalaydrated.Constants.{EVENTS, TIME}
+import politrons.scalaydrated.ModelInspector.checkModelConstructor
 
 import scala.reflect._
 
@@ -24,7 +25,7 @@ object PersistenceModel {
     * @return new instance of the model
     */
   def initialize[M <: Model : ClassTag](persistenceDAO: PersistenceDAO): M = {
-    ModelInspector.checkModelConstructor()
+    checkModelConstructor()
     val model = classTag[M].runtimeClass.newInstance.asInstanceOf[M]
     persistenceDAO.init()
     model.setPersistence(persistenceDAO)
