@@ -17,7 +17,7 @@ import politrons.scalaydrated.persistence.CouchbaseDAO
   */
 class EventSourcingTest {
 
-  implicit val couchbase= new CouchbaseDAO()
+  implicit val couchbase = new CouchbaseDAO()
 
   @Test
   def createAccountTest() {
