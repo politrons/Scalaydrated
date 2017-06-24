@@ -24,7 +24,7 @@ object PersistenceModel {
     * @tparam M Model type to be used to be instantiated and set the persistence layer in it.
     * @return new instance of the model
     */
-  def initialize[M <: Model : ClassTag](persistenceDAO: PersistenceDAO): M = {
+  def initialize[M <: Model : ClassTag](implicit persistenceDAO : PersistenceDAO): M = {
     checkModelConstructor()
     val model = classTag[M].runtimeClass.newInstance.asInstanceOf[M]
     persistenceDAO.init()

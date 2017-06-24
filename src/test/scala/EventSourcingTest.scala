@@ -17,12 +17,12 @@ import politrons.scalaydrated.persistence.CouchbaseDAO
   */
 class EventSourcingTest {
 
-  val couchbase= new CouchbaseDAO()
+  implicit val couchbase= new CouchbaseDAO()
 
   @Test
   def createAccountTest() {
     //Given
-    val user = initialize[User](couchbase)
+    val user = initialize[User]
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -37,7 +37,7 @@ class EventSourcingTest {
   @Test
   def shoppingTest() {
     //Given
-    val user = initialize[User](couchbase)
+    val user = initialize[User]
     user.createDocument(generateId)
     val createProductCmd = new AddProductCommand(generateId, "Beans", "1.00")
     //When
@@ -50,7 +50,7 @@ class EventSourcingTest {
   @Test
   def completeRehydrateTest() {
     //Given
-    val user = initialize[User](couchbase)
+    val user = initialize[User]
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -69,7 +69,7 @@ class EventSourcingTest {
   @Test
   def addThreeProducts() {
     //Given
-    val user = initialize[User](couchbase)
+    val user = initialize[User]
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -88,7 +88,7 @@ class EventSourcingTest {
   @Test
   def addRemoveProducts() {
     //Given
-    val user = initialize[User](couchbase)
+    val user = initialize[User]
     val (userName: String, password: String, id: String) = getCredentials
     user.createDocument(id)
     val createUserCommand = new CreateUserCommand(userName, password)
@@ -116,7 +116,7 @@ class EventSourcingTest {
     user.appendEvent[ProductAdded](createProductCmd4)
     user.appendEvent[ProductRemoved](productRemovedCmd2)
 
-    val newUser = initialize[User](couchbase)
+    val newUser = initialize[User]
     newUser.rehydrate(id)
     //Then
     assert(newUser.userName.equals(userName) && newUser.password.equals(password))
