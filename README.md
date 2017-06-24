@@ -73,5 +73,5 @@ An example of a Document with several events imitating an online shopping:
 }
 ```   
 
-Unit test [here] (src/test/scala/EventSourcingTest.scala)
+Unit test [here](src/test/scala/EventSourcingTest.scala)
 
