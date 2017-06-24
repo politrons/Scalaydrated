@@ -6,7 +6,7 @@ CQRS + Event sourcing project
  
 The use of this library is really simple, you just need to follow the next steps in order to start playing.
  * Classes to implement in order to use this library:
-    * Create a model class(Akka actor). Must extends `Model` library class.
+    * Create a model class(stateless model). Must extends `Model` library class.
     * Create all events class that you want to apply on your model with the actions that you want to apply over it. Must extend `Event` library class.
     * Create all commands to orchestrate the creation of the event to be used for the rehydration of the model. Must extend `Command` library class.
  * Once that you have all your classes implemented is time to start playing.
